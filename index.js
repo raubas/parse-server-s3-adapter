@@ -9,6 +9,7 @@ const DEFAULT_S3_REGION = "us-east-1";
 function requiredOrFromEnvironment(options, key, env) {
   options[key] = options[key] || process.env[env];
   if (!options[key]) {
+    console.log(key + env);
     throw `S3Adapter requires option '${key}' or env. variable ${env}`;
   }
   return options;
@@ -113,6 +114,7 @@ S3Adapter.prototype.createFile = function(filename, data, contentType) {
     return new Promise((resolve, reject) => {
       this._s3Client.upload(params, (err, data) => {
         if (err !== null) {
+          console.log(err);
           return reject(err);
         }
         resolve(data);
@@ -129,6 +131,7 @@ S3Adapter.prototype.deleteFile = function(filename) {
       };
       this._s3Client.deleteObject(params, (err, data) =>{
         if(err !== null) {
+          console.log(err)
           return reject(err);
         }
         resolve(data);
@@ -145,6 +148,7 @@ S3Adapter.prototype.getFileData = function(filename) {
     return new Promise((resolve, reject) => {
       this._s3Client.getObject(params, (err, data) => {
         if (err !== null) {
+          console.log(err)
           return reject(err);
         }
         // Something happend here...
